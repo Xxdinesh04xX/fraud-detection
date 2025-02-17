@@ -1,16 +1,12 @@
 # Fraud Detection with Machine Learning On Banksim Data
 
-Fraudulent behavior can be seen across many different fields such as e-commerce, healthcare, payment and banking systems. Fraud costs businesses millions of dollars each year. 
+Fraud is a major issue in industries like e-commerce, healthcare, and banking, costing businesses millions annually. Automated fraud detection can be done using rule-based methods or machine learning, with this repository focusing on the latter for classifying fraudulent transactions.
 
-Automated detection of fraudulent behavior can be done in various ways including rule based approaches and machine learning.
-This repository uses the latter approach for classification of fraudulent transactions. 
+The dataset used here is synthetically generated, containing payments from various customers made at different times and amounts. For more details on the dataset, check the "Dataset" section for the link and the original paper under "Original Paper."
 
+If you prefer not to run the script, here's a quick summary of the classification results from the machine learning models:
 
-The synthetically generated dataset consists of payments from various customers made in different time periods and with different amounts. If you want more information on the dataset you can refer below to the Dataset title for the dataset link and information and you can find the original paper for the dataset under the "Original Paper" title. 
-
-For those who do not wish to run the script to acquire the results, here is a quick recap of the classification results of the machine learning models used in the script:
-
-!Update Note: These results are without the oversampling technique SMOTE. I have also added a jupyter notebook with more insights and used the SMOTE for balancing the dataset. Overall results looks more better just check the file called Fraud Detection on Bank Payments.ipynb from inside the repo.
+Update: These results are without the SMOTE oversampling technique. I've added a Jupyter notebook with more insights and included SMOTE to balance the dataset. The updated results are better, and you can check them in the "Fraud Detection on Bank Payments.ipynb" file in the repo.
 
 <br/>Classification Report for K-Nearest Neighbours (1:fraudulent,0:non-fraudulent) :
 
