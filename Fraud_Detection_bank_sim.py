@@ -1,10 +1,6 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Mar 15 14:57:46 2019
 
-@author: atavci
-"""
+
+
 
 import pandas as pd
 import numpy as np
@@ -21,14 +17,13 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import VotingClassifier
 
-# set seaborn style because it prettier
+# Load the dataset
 sns.set()
 # %% read and plot
 data = pd.read_csv("Data/synthetic-data-from-a-financial-payment-system/bs140513_032310.csv")
 
 data.head(5)
 
-# Create two dataframes with fraud and non-fraud data 
 df_fraud = data.loc[data.fraud == 1] 
 df_non_fraud = data.loc[data.fraud == 0]
 
@@ -39,7 +34,7 @@ plt.legend()
 plt.show()
 print("Number of normal examples: ",df_non_fraud.fraud.count())
 print("Number of fradulent examples: ",df_fraud.fraud.count())
-#print(data.fraud.value_counts()) # does the same thing above
+
 
 print("Mean feature values per category",data.groupby('category')['amount','fraud'].mean())
 
@@ -47,7 +42,7 @@ print("Columns: ", data.columns)
 
 
 
-# Plot histograms of the amounts in fraud and non-fraud data 
+# Plot histograms 
 plt.hist(df_fraud.amount, alpha=0.5, label='fraud',bins=100)
 plt.hist(df_non_fraud.amount, alpha=0.5, label='nonfraud',bins=100)
 plt.title("Histogram for fraud and nonfraud payments")
@@ -60,22 +55,25 @@ plt.show()
 print(data.zipcodeOri.nunique())
 print(data.zipMerchant.nunique())
 
-# dropping zipcodeori and zipMerchant since they have only one unique value
+
 data_reduced = data.drop(['zipcodeOri','zipMerchant'],axis=1)
 
 data_reduced.columns
 
-# turning object columns type to categorical for later purposes
+
 col_categorical = data_reduced.select_dtypes(include= ['object']).columns
 for col in col_categorical:
     data_reduced[col] = data_reduced[col].astype('category')
 
-# it's usually better to turn the categorical values (customer, merchant, and category variables  )
-# into dummies because they have no relation in size(i.e. 5>4) but since they are too many (over 500k) the features will grow too many and 
-# it will take forever to train but here is the code below for turning categorical features into dummies
-#data_reduced.loc[:,['customer','merchant','category']].astype('category')
-#data_dum = pd.get_dummies(data_reduced.loc[:,['customer','merchant','category','gender']],drop_first=True) # dummies
-#print(data_dum.info())
+# Convert categorical variables to categories
+# data_reduced.loc[:, ['customer', 'merchant', 'category']].astype('category')
+
+# Create dummy variables for customer, merchant, category, and gender
+# data_dum = pd.get_dummies(data_reduced.loc[:, ['customer', 'merchant', 'category', 'gender']], drop_first=True)
+
+# Print the info of the new data
+# print(data_dum.info())
+
 
 # categorical values ==> numeric values
 data_reduced[col_categorical] = data_reduced[col_categorical].apply(lambda x: x.cat.codes)
@@ -119,12 +117,12 @@ knn = KNeighborsClassifier(n_neighbors=5,p=1)
 knn.fit(X_train,y_train)
 y_pred = knn.predict(X_test)
 
-# High precision on fraudulent examples almost perfect score on non-fraudulent examples
+
 print("Classification Report for K-Nearest Neighbours: \n", classification_report(y_test, y_pred))
 print("Confusion Matrix of K-Nearest Neigbours: \n", confusion_matrix(y_test,y_pred))
 plot_roc_auc(y_test, knn.predict_proba(X_test)[:,1])
 
-# %% Random Forest Classifier
+
 
 rf_clf = RandomForestClassifier(n_estimators=100,max_depth=8,random_state=42,
                                 verbose=1,class_weight="balanced")
@@ -132,7 +130,7 @@ rf_clf = RandomForestClassifier(n_estimators=100,max_depth=8,random_state=42,
 rf_clf.fit(X_train,y_train)
 y_pred = rf_clf.predict(X_test)
 
-# 98 % recall on fraudulent examples but low 24 % precision.
+
 print("Classification Report for Random Forest Classifier: \n", classification_report(y_test, y_pred))
 print("Confusion Matrix of Random Forest Classifier: \n", confusion_matrix(y_test,y_pred))
 plot_roc_auc(y_test, rf_clf.predict_proba(X_test)[:,1])
@@ -148,8 +146,7 @@ XGBoost_CLF.fit(X_train,y_train)
 
 y_pred = XGBoost_CLF.predict(X_test)
 
-# reatively high precision and recall for fraudulent class
-print("Classification Report for XGBoost: \n", classification_report(y_test, y_pred)) # Accuracy for XGBoost:  0.9963059088641371
+print("Classification Report for XGBoost: \n", classification_report(y_test, y_pred)) 
 print("Confusion Matrix of XGBoost: \n", confusion_matrix(y_test,y_pred))
 plot_roc_auc(y_test, XGBoost_CLF.predict_proba(X_test)[:,1])
 
@@ -162,8 +159,6 @@ ens.fit(X_train,y_train)
 y_pred = ens.predict(X_test)
 
 
-# Combined Random Forest model's recall and other models' precision thus this model
-# ensures a higher recall with less false alarms (false positives)
-print("Classification Report for Ensembled Models: \n", classification_report(y_test, y_pred)) # Accuracy for XGBoost:  0.9963059088641371
+print("Classification Report for Ensembled Models: \n", classification_report(y_test, y_pred)) # Accuracy 
 print("Confusion Matrix of Ensembled Models: \n", confusion_matrix(y_test,y_pred))
 plot_roc_auc(y_test, ens.predict_proba(X_test)[:,1])

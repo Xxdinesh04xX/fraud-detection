@@ -5,8 +5,6 @@ Fraudulent behavior can be seen across many different fields such as e-commerce,
 Automated detection of fraudulent behavior can be done in various ways including rule based approaches and machine learning.
 This repository uses the latter approach for classification of fraudulent transactions. 
 
-For the in-depth analysis you can check out my notebook on Kaggle below or run the ipynb file in your Juptyter environment. 
-https://www.kaggle.com/code/turkayavci/fraud-detection-on-bank-payments/notebook
 
 The synthetically generated dataset consists of payments from various customers made in different time periods and with different amounts. If you want more information on the dataset you can refer below to the Dataset title for the dataset link and information and you can find the original paper for the dataset under the "Original Paper" title. 
 
@@ -71,7 +69,3 @@ Confusion Matrix of Ensembled Models:
 
 ## Dataset
 https://www.kaggle.com/ntnu-testimon/banksim1
-
-## Original paper
-
-Lopez-Rojas, Edgar Alonso ; Axelsson, Stefan Banksim: A bank payments simulator for fraud detection research Inproceedings 26th European Modeling and Simulation Symposium, EMSS 2014, Bordeaux, France, pp. 144–152, Dime University of Genoa, 2014, ISBN: 9788897999324. https://www.researchgate.net/publication/265736405_BankSim_A_Bank_Payment_Simulation_for_Fraud_Detection_Research
